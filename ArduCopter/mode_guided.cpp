@@ -47,6 +47,18 @@ bool ModeGuided::init(bool ignore_checks)
 // should be called at 100hz or more
 void ModeGuided::run()
 {
+
+//begin: Param Change 
+			AP_Param *vp; // Pointer that connects the parameter
+			enum ap_var_type var_type;
+			const char* my_parameter = "INS_POS1_X"; // Parameter name in string format
+			uint16_t parameter_flags = 0;
+			vp = AP_Param::find(my_parameter, &var_type, &parameter_flags); //finding parameter in AP_Param
+			float value = 0.01;
+			gcs().send_parameter_value(my_parameter, var_type, value); //Parameter update in gcs
+			vp->set_float(value, var_type); //Parameter update in Ardupilot
+//end: Param Change
+
     // call the correct auto controller
     switch (guided_mode) {
 
